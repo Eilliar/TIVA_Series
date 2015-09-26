@@ -13,20 +13,26 @@ boolean debug = true;
 const int EnB = P1_7;
 const int In4 = P2_1;  // Use pin with analogWrite support
 const int In3 = P2_2;  // Use pin with analogWrite support
+const int maxVel = 76;   // Using a 20 V power supply -> 45% PWM = 6V
+const int minVel = 38;   // Using a 20 V power supply -> 22% PWM = 3V
 
-void forward(int En, int InX, int InY)
+void forward(int En, int InX, int InY, int velocity)
 {
+  velocity = constrain(velocity, minVel, maxVel);
   digitalWrite(En, LOW);
-  analogWrite(InX, 76);  // PWM 45% Duty Cicle
+  delay(10);
+  analogWrite(InX, velocity);  // PWM 45% Duty Cicle
   analogWrite(InY, 0);
   digitalWrite(En, HIGH);
 }
 
-void backward(int En, int InX, int InY)
+void backward(int En, int InX, int InY, int velocity)
 {
+  velocity = constrain(velocity, minVel, maxVel);
   digitalWrite(En, LOW);
+  delay(10);
   analogWrite(InX, 0);
-  analogWrite(InY, 76);  // PWM 45% Duty Cicle
+  analogWrite(InY, velocity);  // PWM 45% Duty Cicle
   digitalWrite(En, HIGH);
 }
 void fastStop(int En, int InX, int InY)
@@ -61,17 +67,20 @@ void loop()
   {
     // look for the information: Forward = 1; Backward = 2
     int movement = Serial.parseInt();
+    int velocity = Serial.parseInt();
     if (debug)
-    {Serial.print("Data Received!");}
+    {
+      Serial.print("Data Received!");
+    }
     if (Serial.read() == '\n')
     {
       if (movement == 1)
       {
-        forward(EnB, In3, In4);
+        forward(EnB, In3, In4, velocity);
       }
       else if (movement == 2)
       {
-        backward(EnB, In3, In4);
+        backward(EnB, In3, In4, velocity);
       }
       else
       {
