@@ -1,8 +1,13 @@
 /*
+Project: Control DC Motors using MotMama v.2 (L298N Driver)
+
+Author:Bruno Godoi Eilliar
+Date: September 26, 2015.
 
 Notes:
 - http://energia.nu/Tutorial_PWM.html
-- For a 20 V Input voltage -> PWM 45% duty cicle
+- Motors: http://www.botnroll.com/index.php?id_product=290&controller=product&id_lang=5
+- For a 20V Input voltage -> PWM 45% duty cicle
 */
 
 const int EnB = P1_7;
