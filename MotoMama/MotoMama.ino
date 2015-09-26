@@ -21,7 +21,7 @@ void forward(int En, int InX, int InY, int velocity)
   velocity = constrain(velocity, minVel, maxVel);
   digitalWrite(En, LOW);
   delay(10);
-  analogWrite(InX, velocity);  // PWM 45% Duty Cicle
+  analogWrite(InX, velocity);  // PWM to control the velocity
   analogWrite(InY, 0);
   digitalWrite(En, HIGH);
 }
@@ -32,7 +32,7 @@ void backward(int En, int InX, int InY, int velocity)
   digitalWrite(En, LOW);
   delay(10);
   analogWrite(InX, 0);
-  analogWrite(InY, velocity);  // PWM 45% Duty Cicle
+  analogWrite(InY, velocity); // PWM to control the velocity
   digitalWrite(En, HIGH);
 }
 void fastStop(int En, int InX, int InY)
@@ -65,7 +65,9 @@ void loop()
   // put your main code here, to run repeatedly:
   while(Serial.available() > 0)
   {
-    // look for the information: Forward = 1; Backward = 2
+    // Receive comma separated values: a,b.
+    // a: 1 -> forward; 2 -> backward
+    // b: velocity -> [10, 75], emulate 3V to 6V input
     int movement = Serial.parseInt();
     int velocity = Serial.parseInt();
     if (debug)
@@ -85,7 +87,7 @@ void loop()
       else
       {
         freeStop(EnB, In3, In4);
-        Serial.print("Error! Movement must be: (1) Foward or (2) Backward.");
+        Serial.print("Error! Movement must be: '(1) Foward or (2) Backward, velocity'.");
       }
     }  
   }
