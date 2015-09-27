@@ -1,14 +1,20 @@
 # -*- coding: utf-8 -*-
 """
+Graphical User Interface (GUI) to Control a DC Motor using MotoMama V2.0 (L298N Driver)
 Created on Sat Sep 26 13:12:48 2015
 
-@author: Bruno
+@author: Bruno Godoi Eilliar
+Notes:
+    - Using Python serial module
+    - Using Tkinter module to create GUI
 """
 
 from Tkinter import *
+from PIL import ImageTk, Image
 import serial
 
-velocity
+global velocity
+global direction
 direction = 0
 
 try: 
@@ -49,8 +55,18 @@ try:
     
     # Create a window
     win = Tk()
+    win.title("Motor Control Interface")
+    win.geometry("400x180")
     win.protocol("WM_DELETE_WINDOW", on_closing)
+
+    # Create image compatible with Tkinter
+    path = "logo.jpg"
+    logo = ImageTk.PhotoImage(Image.open(path))
+    #The Label widget is a standard Tkinter widget used to display a text or image on the screen.
+    panel = Label(win, image = logo)
+    panel.image = logo
     
+
     # Create buttons
     Forward = Button(win, text = "Move Forward", command = forward)
     Backward = Button(win, text = "Move Backward", command = backward)
@@ -58,10 +74,14 @@ try:
     bar_v = Scale(win, from_=10, to=75, resolution = 1, orient = HORIZONTAL, label = "Velocity", command = update_v)
     
     # Attach buttons on the window
-    Forward.pack()
-    Backward.pack()
-    Off.pack()
-    bar_v.pack()
+    Forward.grid(row = 0, column = 0)
+    Backward.grid(row = 1, column = 0)
+    Off.grid(row = 2, column = 0)
+    bar_v.grid(row = 3 , column = 0)
+    
+    #The Pack geometry manager packs widgets in rows or columns.
+    panel.place(x = 150, y = 10)
+
     # Start GUI
     win.mainloop()
 

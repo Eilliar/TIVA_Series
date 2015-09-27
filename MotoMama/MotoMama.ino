@@ -61,7 +61,6 @@ void setup()
 
 void loop()
 {
-  char skipChar = '\n';
   // put your main code here, to run repeatedly:
   while(Serial.available() > 0)
   {
@@ -92,3 +91,4 @@ void loop()
     }  
   }
 }
+
